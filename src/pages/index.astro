@@ -11,25 +11,27 @@ import Layout from '../layouts/Layout.astro';
 
 
 <script>
-	import { DateTime } from 'luxon';
-		function isDaylightSavingTime() {
-			const now = DateTime.fromObject({year: 2023,
-				month: 3,
-				day: 8});
-			return now.isInDST;
-			}
+ 	import { DateTime } from 'luxon';
 
-		class isDST extends HTMLElement {
-			constructor() {
-				super();
-				this.attachShadow({mode: 'open'});
-				}
-			connectedCallback() {
-				this.shadowRoot.innerHTML = isDaylightSavingTime() ? 'Yes.' : 'No.';
-				}
-			}
+ 	Date.prototype.getTime = function() { return 1678604874 };
 
-		customElements.define('is-dst', isDST);
+	function isDaylightSavingTime() {
+		const now = DateTime.local();
+		return now.isInDST;
+	}
+
+	class isDST extends HTMLElement {
+		constructor() {
+			super();
+			this.attachShadow({mode: 'open'});
+		}
+	connectedCallback() {
+		this.shadowRoot.innerHTML = isDaylightSavingTime() ? 'Yes.' : 'No.';
+		}
+	}
+
+
+	customElements.define('is-dst', isDST);
 
 </script>
 <style>
