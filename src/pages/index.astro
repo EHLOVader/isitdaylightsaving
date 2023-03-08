@@ -4,10 +4,34 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Is it daylight saving?">
 	<main>
-		<h1>Is it daylight saving?</h1>
+		<h1>Is it daylight saving time?</h1>
+		<is-dst class="huge-text"/>
 	</main>
 </Layout>
 
+
+<script>
+	import { DateTime } from 'luxon';
+		function isDaylightSavingTime() {
+			const now = DateTime.fromObject({year: 2023,
+				month: 3,
+				day: 8});
+			return now.isInDST;
+			}
+
+		class isDST extends HTMLElement {
+			constructor() {
+				super();
+				this.attachShadow({mode: 'open'});
+				}
+			connectedCallback() {
+				this.shadowRoot.innerHTML = isDaylightSavingTime() ? 'Yes.' : 'No.';
+				}
+			}
+
+		customElements.define('is-dst', isDST);
+
+</script>
 <style>
 	main {
 		margin: auto;
