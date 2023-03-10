@@ -19,8 +19,6 @@ import Layout from '../layouts/Layout.astro';
 <script>
 	import { DateTime, Info } from 'luxon';
 
-		Date.prototype.getTime = function() { return 1678604874 };
-
 		function isDaylightSavingTime() {
 			const now = DateTime.local();
 			return now.isInDST;
