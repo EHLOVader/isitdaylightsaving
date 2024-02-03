@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+
+const request = new Request('https://www.timeapi.io/api/TimeZone/AvailableTimeZones');
+
+const response = await fetch(request)
+
+const timezones = await response.json();
+
+---
+
+
+<Layout title="TimeZones">
+    <main>
+        <h1>Available TimeZones</h1>
+        <ul>
+            {timezones.map((timezone) => <li><a href={timezone}>{timezone}</a></li>)}
+        </ul>
+    </main>
+</Layout>
+
+<style lang="scss">
+    main {
+        margin: auto;
+        padding: 1.5rem;
+        max-width: 100%;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+    }
+
+    ul {
+        list-style: none;
+        columns: 3;
+
+        @media(max-width: 1000px) {
+            columns: 2;
+        }
+
+        @media(max-width: 600px) {
+          columns: 1;
+        }
+    }
+
+</style>

@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+
+    const request = new Request('https://www.timeapi.io/api/TimeZone/AvailableTimeZones');
+
+    const response = await fetch(request)
+
+    const timezones = await response.json();
+
+    const paths = timezones.map((timezone) => ({
+        params: { tz: timezone },
+    }))
+
+    paths.push({ params: { tz: undefined } })
+
+    return paths
+
+
+}
+
+const { tz } = Astro.params;
+
+---
+
+<Layout title="Is it daylight saving?">
+	<main>
+		<h1>Is it daylight saving time<br/>in {tz}?</h1>
+		<is-dst class="huge-text" data-tz={tz}/>
+		<p class="locality">
+			Based on the timezone<span id="timezone"></span>.
+		</p>
+		<p class="dst-info" id="info">
+
+		</p>
+	</main>
+</Layout>
+
+<script>
+
+	import { DateTime, Info } from 'luxon';
+
+	function isDaylightSavingTime(zone) {
+		const now = DateTime.local().setZone(zone);
+		return now.isInDST;
+	}
+
+	function hasDaylightSavingTime() {
+		return Info.hasDST();
+	}
+
+	class isDST extends HTMLElement {
+		constructor() {
+			super();
+			this.attachShadow({mode: 'open'});
+		}
+		connectedCallback() {
+			this.shadowRoot.innerHTML = isDaylightSavingTime(this.dataset.tz) ? 'Yes.' : 'No.';
+			this.classList.add(isDaylightSavingTime(this.dataset.tz) ? 'yes' : 'no');
+
+			if(hasDaylightSavingTime()){
+				document.getElementById('timezone').innerHTML = ` ${this.dataset.tz}`;
+			}else{
+				document.getElementById('timezone').innerHTML = ` ${this.dataset.tz} there is no daylight saving time`;
+			}
+		}
+
+	}
+
+
+	customElements.define('is-dst', isDST);
+
+</script>
+
+<style lang="scss" is:global>
+	main {
+		margin: auto;
+		padding: 1.5rem;
+		max-width: 65ch;
+		flex-direction: column;
+		display: flex;
+		align-items: center;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 800;
+		margin: 0;
+	}
+	.huge-text {
+		font-family: Impact, sans-serif;
+		font-size: 20rem;
+		font-weight: 800;
+
+		@media(max-width: 600px) {
+			font-size: 10rem;
+		}
+	}
+
+</style>
+
+
+
+
+
+
+
+
+
+
