@@ -6,7 +6,25 @@ const request = new Request('https://www.timeapi.io/api/TimeZone/AvailableTimeZo
 
 const response = await fetch(request)
 
-const timezones = await response.json();
+const alltimezones = await response.json();
+
+const timezones = [];
+
+const tz_groups = alltimezones.map((timezone) => {
+    return timezone.split('/')[0];
+}).filter((value, index, self) => {
+    return self.indexOf(value) === index;
+});
+
+tz_groups.map((group) => {
+    const group_timezones = alltimezones.filter((timezone) => {
+        return timezone.startsWith(group);
+    });
+
+    timezones[group] = group_timezones;
+});
+
+console.log(timezones);
 
 ---
 
@@ -15,7 +33,7 @@ const timezones = await response.json();
     <main>
         <h1>Available TimeZones</h1>
         <ul>
-            {timezones.map((timezone) => <li><a href={timezone}>{timezone}</a></li>)}
+            {tz_groups.map((group) => <li> <h2>{group} </h2> <ul> {timezones[group].map((zone) =>  <li>  <a href={zone}>{zone}</a></li> ) } </ul>  </li>)}
         </ul>
     </main>
 </Layout>
@@ -30,9 +48,19 @@ const timezones = await response.json();
         align-items: center;
     }
 
-    ul {
+    main > ul {
         list-style: none;
         columns: 3;
+
+      & > li {
+          break-inside: avoid-column;
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
 
         @media(max-width: 1000px) {
             columns: 2;
