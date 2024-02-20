@@ -72,3 +72,10 @@ console.log(timezones);
     }
 
 </style>
+
+<script>
+    //if site doesn't have trailing slash, add it
+    if (!location.pathname.endsWith('/')) {
+        location.pathname += '/';
+    }
+</script>
