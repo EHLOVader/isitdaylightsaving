@@ -17,9 +17,17 @@ const tz_groups = alltimezones.map((timezone) => {
 });
 
 tz_groups.map((group) => {
-    timezones[group] = alltimezones.filter((timezone) => {
+    const group_timezones = alltimezones.filter((timezone) => {
         return timezone.startsWith(group);
     });
+
+    if(group_timezones.length > 0) {
+        group_timezones.sort();
+    }else {
+        group_timezones.push(group);
+    }
+
+    timezones[group] = group_timezones;
 });
 
 console.log(timezones);
