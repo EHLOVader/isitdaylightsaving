@@ -7,5 +7,5 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   trailingSlash: "ignore",
   site: 'https://isitdaylightsaving.com',
-  integrations: [sitemap()]
+  integrations: []
 });
