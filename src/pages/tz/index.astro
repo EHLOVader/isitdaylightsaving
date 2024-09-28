@@ -54,7 +54,7 @@ tz_groups.map((group) => {
 
     main > ul {
         list-style: none;
-        columns: 3;
+        columns: 5;
 
       & > li {
           break-inside: avoid-column;
@@ -66,11 +66,19 @@ tz_groups.map((group) => {
             }
         }
 
-        @media(max-width: 1000px) {
+        @media(max-width: 1200px) {
+            columns: 4;
+        }
+
+        @media(max-width: 1100px) {
+            columns: 3;
+        }
+
+        @media(max-width: 800px) {
             columns: 2;
         }
 
-        @media(max-width: 600px) {
+        @media(max-width: 500px) {
           columns: 1;
         }
     }
