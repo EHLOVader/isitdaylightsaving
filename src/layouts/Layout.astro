@@ -4,6 +4,9 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+
+const currentYear = new Date().getFullYear();
+
 ---
 
 <!DOCTYPE html>
@@ -23,13 +26,42 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<slot />
+
+		<footer>
+			<ul>
+				<li>
+					<a href="/">My Timzone</a>
+				</li>
+				<li>
+					<a href="/tz">All TimeZones</a>
+				</li>
+				<li>
+					<a href="https://github.com/EHLOVader/isitdaylightsaving" target="_blank">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+							<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+						</svg>
+						GitHub
+					</a>
+				</li>
+			</ul>
+		  <p>
+			  &copy; {currentYear} <a href="https://ehlovader.com" target="_blank">EHLOVader</a>.
+		  </p>
+		</footer>
 	</body>
 </html>
-<style is:global>
+<style is:global lang="scss" >
 	:root {
 		--accent: 124, 58, 237;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
 	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
 	html {
 		font-family: system-ui, sans-serif;
 		background-color: #F6F6F6;
@@ -39,4 +71,50 @@ const { title } = Astro.props;
 		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
+	body {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+		margin: 0;
+	}
+	main {
+		flex: 1;
+	}
+	footer {
+		text-align: center;
+		margin-top: auto;
+		padding: 1rem;
+		background-color: #f1f1f1;
+		width: 100%;
+	}
+	footer ul {
+		display: flex;
+		justify-content: center;
+		list-style: none;
+		padding: 0;
+		gap: 1rem;
+	}
+
+	a {
+		color: inherit;
+		font-size: 1em;
+		line-height: 2em;
+		text-underline-offset: 5.5px;
+
+		&:hover {
+			outline: none;
+			text-decoration: none;
+			border-bottom: 3px solid currentColor;
+		}
+
+		&:focus {
+			outline-offset: -3px;
+			padding: 6px;
+			margin: -6px;
+			outline: dotted;
+			background: #222;
+			color: #fff;
+		}
+	}
+
 </style>
